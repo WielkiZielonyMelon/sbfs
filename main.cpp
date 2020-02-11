@@ -1,27 +1,15 @@
 #include <iostream>
-#include <array>
 #include <functional>
-#include <tuple>
 #include <unordered_set>
 #include <vector>
+#include "types.h"
 
 using std::cout;
 using std::endl;
-using std::array;
 using std::get;
 using std::hash;
-using std::tuple;
 using std::unordered_set;
 using std::vector;
-
-
-enum Tile { Corridor, Wall, Player, Box, Storage,
-            PlayerOnStorage, BoxOnStorage };
-
-typedef tuple<unsigned int, unsigned int> Position;
-typedef tuple<Position, Tile> PositionOfTile;
-typedef vector<Position> Solution;
-typedef vector<PositionOfTile> UndoTiles;
 
 class Board {
 private:
