@@ -1,6 +1,7 @@
 #pragma once
 #include <tuple>
 #include <vector>
+
 enum Tile { Corridor, Wall, Player, Box, Storage,
             PlayerOnStorage, BoxOnStorage };
 

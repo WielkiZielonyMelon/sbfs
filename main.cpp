@@ -13,5 +13,6 @@ int main() {
     b.print();
     Algorithm a = Algorithm(b);
     a.get_solution();
+
     return 0;
 }

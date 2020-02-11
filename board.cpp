@@ -1,6 +1,7 @@
 #include <iostream>
-#include <functional>
+#include <tuple>
 #include <vector>
+
 #include "board.h"
 #include "types.h"
 
@@ -9,9 +10,6 @@ using std::endl;
 using std::get;
 using std::vector;
 
-Board::Board(unsigned int _rows, unsigned int _cols) :
-    rows(_rows), cols(_cols), map(rows, vector<Tile>(cols))  {}
-
 void Board::print(void) {
     for (auto row: map) {
         for (auto tile: row) {
@@ -19,22 +17,6 @@ void Board::print(void) {
         }
         cout << endl;
     }
-}
-
-unsigned int Board::getRows() const noexcept {
-    return rows;
-}
-
-unsigned int Board::getCols() const noexcept {
-    return cols;
-}
-
-const vector<Tile>& Board::operator[](unsigned int row) const {
-    return map[row];
-}
-
-vector<Tile>& Board::operator[](unsigned int row) {
-    return map[row];
 }
 
 bool Board::operator==(const Board& o) const {

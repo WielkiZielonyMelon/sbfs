@@ -8,9 +8,9 @@ private:
     Board board;
     std::unordered_set<Board> setOfBoards;
     void _get_solution(Solution& solution, Position position);
+
 public:
     Algorithm(Board& b);
     Solution get_solution();
-
 };
 

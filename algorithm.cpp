@@ -1,5 +1,6 @@
-#include <functional>
 #include <iostream>
+#include <tuple>
+#include <vector>
 #include "algorithm.h"
 #include "board.h"
 #include "types.h"
