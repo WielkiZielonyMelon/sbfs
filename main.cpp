@@ -16,7 +16,7 @@ using std::vector;
 
 
 enum Tile { Corridor, Wall, Player, Box, Storage,
-    PlayerOnStorage, BoxOnStorage };
+            PlayerOnStorage, BoxOnStorage };
 
 typedef tuple<unsigned int, unsigned int> Position;
 typedef tuple<Position, Tile> PositionOfTile;
@@ -255,12 +255,12 @@ public:
     }
 
     void _get_solution(Solution& solution, Position position) {
-	auto search = setOfBoards.find(board);
-	if (search != setOfBoards.end()) {
+        auto search = setOfBoards.find(board);
+        if (search != setOfBoards.end()) {
             cout << "Terminate this branch" << endl;
             return;
-	}
-	setOfBoards.insert(board);
+        }
+        setOfBoards.insert(board);
 
         if (board.isSolved()) {
             cout << "Solution is:" << endl;
