@@ -18,11 +18,11 @@ Solution Algorithm::get_solution() {
     return solution;
 }
 
-void Algorithm::_get_solution(Solution& solution, Position position) {
+bool Algorithm::_get_solution(Solution& solution, Position position) {
     auto search = setOfBoards.find(board);
     if (search != setOfBoards.end()) {
         cout << "Terminate this branch" << endl;
-        return;
+        return false;
     }
     setOfBoards.insert(board);
 
@@ -31,7 +31,8 @@ void Algorithm::_get_solution(Solution& solution, Position position) {
         for (auto pos: solution) {
             cout << get<0>(pos) << " " << get<1>(pos) << endl;
         }
-        throw;
+
+        return true;
     }
 
     vector<Position> newPositions = board.getLegalMoves(position);
@@ -40,8 +41,12 @@ void Algorithm::_get_solution(Solution& solution, Position position) {
         auto undo_tiles = board.move(position, positionTo);
         board.print();
         solution.push_back(positionTo);
-        _get_solution(solution, positionTo);
+        if (_get_solution(solution, positionTo)) {
+            return true;
+        }
         board.restore(undo_tiles);
         solution.pop_back();
     }
+
+    return false;
 }
