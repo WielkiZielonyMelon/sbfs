@@ -10,7 +10,11 @@ private:
 
 public:
     Board(unsigned int _rows, unsigned int _cols) :
-        rows(_rows), cols(_cols), map(rows, std::vector<Tile>(cols))  {}
+        rows(_rows), cols(_cols), map(rows, std::vector<Tile>(cols))  {
+        if (rows == 0 or cols == 0) {
+            throw;
+        }
+    }
 
     void print(void);
 
