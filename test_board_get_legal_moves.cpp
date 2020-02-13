@@ -37,47 +37,24 @@ TEST_CASE("Test legal moves on empty 1x2 board") {
     REQUIRE(legalMoves[0] == expectedMoves);
 }
 
-TEST_CASE("Test legal moves on empty 2x2 board, start 0 0") {
+TEST_CASE("Test legal moves on empty 2x2 board") {
     Board board(2, 2);
 
-    auto startPos = Position(0, 0);
+    auto dump = GENERATE(vector<Position>{ Position(0, 0),
+                                           Position(0, 1), Position(1, 0) },
+                         vector<Position>{ Position(0, 1),
+                                           Position(0, 0), Position(1, 1) },
+                         vector<Position>{ Position(1, 1),
+                                           Position(1, 0), Position(0, 1) },
+                         vector<Position>{ Position(1, 0),
+                                           Position(0, 0), Position(1, 1) });
+    auto startPos = dump[0];
+    auto expectedMoves = vector<Position>{ dump[1], dump[2] };       
     auto legalMoves = board.getLegalMoves(startPos);
-    auto expectedMoves = vector<Position>{Position(1, 0), Position(0, 1)};
+
     sort(legalMoves.begin(), legalMoves.end());
     sort(expectedMoves.begin(), expectedMoves.end());
-    REQUIRE(legalMoves == expectedMoves);
-}
 
-TEST_CASE("Test legal moves on empty 2x2 board, start 1 0") {
-    Board board(2, 2);
-
-    auto startPos = Position(1, 0);
-    auto legalMoves = board.getLegalMoves(startPos);
-    auto expectedMoves = vector<Position>{Position(0, 0), Position(1, 1)};
-    sort(legalMoves.begin(), legalMoves.end());
-    sort(expectedMoves.begin(), expectedMoves.end());
-    REQUIRE(legalMoves == expectedMoves);
-}
-
-TEST_CASE("Test legal moves on empty 2x2 board, start 0 1") {
-    Board board(2, 2);
-    
-    auto startPos = Position(0, 1);
-    auto legalMoves = board.getLegalMoves(startPos);
-    auto expectedMoves = vector<Position>{Position(0, 0), Position(1, 1)};
-    sort(legalMoves.begin(), legalMoves.end());
-    sort(expectedMoves.begin(), expectedMoves.end());
-    REQUIRE(legalMoves == expectedMoves);
-}
-
-TEST_CASE("Test legal moves on empty 2x2 board, start 1 1") {
-    Board board(2, 2);
-
-    auto startPos = Position(1, 1);
-    auto legalMoves = board.getLegalMoves(startPos);
-    auto expectedMoves = vector<Position>{Position(1, 0), Position(0, 1)};
-    sort(legalMoves.begin(), legalMoves.end());
-    sort(expectedMoves.begin(), expectedMoves.end());
     REQUIRE(legalMoves == expectedMoves);
 }
 
