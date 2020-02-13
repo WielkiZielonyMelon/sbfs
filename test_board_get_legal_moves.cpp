@@ -2,12 +2,16 @@
 #include "catch.hpp"
 
 #include <algorithm>
+#include <tuple>
 #include <vector>
 #include "board.h"
 #include "types.h"
 
+using std::get;
 using std::sort;
+using std::tuple;
 using std::vector;
+
 TEST_CASE("Test legal moves on empty 1x1 board") {
     Board board(1, 1);
     Position startPos = Position(0, 0);
@@ -40,16 +44,19 @@ TEST_CASE("Test legal moves on empty 1x2 board") {
 TEST_CASE("Test legal moves on empty 2x2 board") {
     Board board(2, 2);
 
-    auto dump = GENERATE(vector<Position>{ Position(0, 0),
-                                           Position(0, 1), Position(1, 0) },
-                         vector<Position>{ Position(0, 1),
-                                           Position(0, 0), Position(1, 1) },
-                         vector<Position>{ Position(1, 1),
-                                           Position(1, 0), Position(0, 1) },
-                         vector<Position>{ Position(1, 0),
-                                           Position(0, 0), Position(1, 1) });
-    auto startPos = dump[0];
-    auto expectedMoves = vector<Position>{ dump[1], dump[2] };       
+    using tuple_type = tuple<Position, vector<Position>>;
+    auto dump = GENERATE(table<Position, vector<Position>>( {
+                tuple_type{ Position(0, 0), vector<Position> {
+                                Position(0, 1), Position(1, 0) }},
+                tuple_type{ Position(0, 1), vector<Position> {
+                                Position(0, 0), Position(1, 1) }},
+                tuple_type{ Position(1, 1), vector<Position> {
+                                Position(1, 0), Position(0, 1) }},
+                tuple_type{ Position(1, 0), vector<Position> {
+                                Position(0, 0), Position(1, 1) }}
+                }));
+    auto startPos = get<0>(dump);
+    auto expectedMoves = get<1>(dump);
     auto legalMoves = board.getLegalMoves(startPos);
 
     sort(legalMoves.begin(), legalMoves.end());
