@@ -14,7 +14,8 @@ using std::vector;
 
 TEST_CASE("Test legal moves on empty 2x1 board") {
     Board board(2, 1);
-    board[0][0] = Tile::Box;
+    auto tileType = GENERATE(Tile::Box, Tile::BoxOnStorage);
+    board[0][0] = tileType;
 
     auto startPos = Position(1, 0);
     auto expectedMoves = vector<Position>();
@@ -22,7 +23,7 @@ TEST_CASE("Test legal moves on empty 2x1 board") {
     REQUIRE(legalMoves == expectedMoves);
 
     board[0][0] = Tile::Corridor;
-    board[1][0] = Tile::Box;
+    board[1][0] = tileType;
     startPos = Position(0, 0);
     expectedMoves = vector<Position>();
     legalMoves = board.getLegalMoves(startPos);       
@@ -31,7 +32,8 @@ TEST_CASE("Test legal moves on empty 2x1 board") {
 
 TEST_CASE("Test legal moves on empty 1x2 board") {
     Board board(1, 2);
-    board[0][0] = Tile::Box;
+    auto tileType = GENERATE(Tile::Box, Tile::BoxOnStorage);
+    board[0][0] = tileType;
 
     auto startPos = Position(0, 1);
     auto expectedMoves = vector<Position>();
@@ -39,7 +41,7 @@ TEST_CASE("Test legal moves on empty 1x2 board") {
     REQUIRE(legalMoves == expectedMoves);
 
     board[0][0] = Tile::Corridor;
-    board[0][1] = Tile::Box;
+    board[0][1] = tileType;
     startPos = Position(0, 0);
     legalMoves = board.getLegalMoves(startPos);       
     REQUIRE(legalMoves == expectedMoves);
@@ -48,6 +50,7 @@ TEST_CASE("Test legal moves on empty 1x2 board") {
 TEST_CASE("Test legal moves on empty 2x2 board") {
     Board board(2, 2);
 
+    auto tileType = GENERATE(Tile::Box, Tile::BoxOnStorage);
     using tuple_type = tuple<Position, vector<Position>, vector<Position>>;
     auto dump = GENERATE(table<Position, vector<Position>, vector<Position>>( {
                 tuple_type{ Position(0, 0),
@@ -91,7 +94,7 @@ TEST_CASE("Test legal moves on empty 2x2 board") {
     auto boxPos = get<1>(dump);
     auto expectedMoves = get<2>(dump);
     for (auto box: boxPos) {
-        board[get<0>(box)][get<1>(box)] = Tile::Box;
+        board[get<0>(box)][get<1>(box)] = tileType;
     }
 
     auto legalMoves = board.getLegalMoves(startPos);
@@ -105,6 +108,7 @@ TEST_CASE("Test legal moves on empty 2x2 board") {
 TEST_CASE("Test legal moves on empty 3x3 board") {
     Board board(3, 3);
 
+    auto tileType = GENERATE(Tile::Box, Tile::BoxOnStorage);
     using tuple_type = tuple<Position, vector<Position>, vector<Position>>;
     auto dump = GENERATE(table<Position, vector<Position>, vector<Position>>( {
                 tuple_type{ Position(0, 0),
@@ -157,7 +161,7 @@ TEST_CASE("Test legal moves on empty 3x3 board") {
     auto boxPos = get<1>(dump);
     auto expectedMoves = get<2>(dump);
     for (auto box: boxPos) {
-        board[get<0>(box)][get<1>(box)] = Tile::Box;
+        board[get<0>(box)][get<1>(box)] = tileType;
     }
 
     auto legalMoves = board.getLegalMoves(startPos);
