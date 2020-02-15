@@ -14,7 +14,7 @@ using std::vector;
 
 TEST_CASE("Test legal moves on empty 2x1 board") {
     Board board(2, 1);
-    board[0][0] = Tile::Wall;
+    board[0][0] = Tile::Box;
 
     auto startPos = Position(1, 0);
     auto expectedMoves = vector<Position>();
@@ -22,15 +22,16 @@ TEST_CASE("Test legal moves on empty 2x1 board") {
     REQUIRE(legalMoves == expectedMoves);
 
     board[0][0] = Tile::Corridor;
-    board[1][0] = Tile::Wall;
+    board[1][0] = Tile::Box;
     startPos = Position(0, 0);
+    expectedMoves = vector<Position>();
     legalMoves = board.getLegalMoves(startPos);       
     REQUIRE(legalMoves == expectedMoves);
 }
 
 TEST_CASE("Test legal moves on empty 1x2 board") {
     Board board(1, 2);
-    board[0][0] = Tile::Wall;
+    board[0][0] = Tile::Box;
 
     auto startPos = Position(0, 1);
     auto expectedMoves = vector<Position>();
@@ -38,7 +39,7 @@ TEST_CASE("Test legal moves on empty 1x2 board") {
     REQUIRE(legalMoves == expectedMoves);
 
     board[0][0] = Tile::Corridor;
-    board[0][1] = Tile::Wall;
+    board[0][1] = Tile::Box;
     startPos = Position(0, 0);
     legalMoves = board.getLegalMoves(startPos);       
     REQUIRE(legalMoves == expectedMoves);
@@ -87,10 +88,10 @@ TEST_CASE("Test legal moves on empty 2x2 board") {
                             vector<Position> { }}
                 }));
     auto startPos = get<0>(dump);
-    auto wallPos = get<1>(dump);
+    auto boxPos = get<1>(dump);
     auto expectedMoves = get<2>(dump);
-    for (auto wall: wallPos) {
-        board[get<0>(wall)][get<1>(wall)] = Tile::Wall;
+    for (auto box: boxPos) {
+        board[get<0>(box)][get<1>(box)] = Tile::Box;
     }
 
     auto legalMoves = board.getLegalMoves(startPos);
@@ -108,37 +109,37 @@ TEST_CASE("Test legal moves on empty 3x3 board") {
     auto dump = GENERATE(table<Position, vector<Position>, vector<Position>>( {
                 tuple_type{ Position(0, 0),
                             vector<Position> { Position(1, 0) },
-                            vector<Position> { Position(0, 1) }},
+                            vector<Position> { Position(0, 1), Position(1, 0) }},
                 tuple_type{ Position(0, 0),
                             vector<Position> { Position(1, 0) },
-                            vector<Position> { Position(0, 1) }},
+                            vector<Position> { Position(0, 1), Position(1, 0) }},
                 tuple_type{ Position(0, 0),
                             vector<Position> { Position(0, 1), Position(1, 0) },
-                            vector<Position> { }},
+                            vector<Position> { Position(0, 1), Position(1, 0) }},
                 tuple_type{ Position(0, 1),
                             vector<Position> { Position(0, 0) },
                             vector<Position> { Position(1, 1), Position(0, 2) }},
                 tuple_type{ Position(0, 1),
                             vector<Position> { Position(1, 1) },
-                            vector<Position> { Position(0, 0), Position(0, 2) }},
+                            vector<Position> { Position(0, 0), Position(1, 1), Position(0, 2) }},
                 tuple_type{ Position(0, 1),
                             vector<Position> { Position(0, 2) },
                             vector<Position> { Position(0, 0), Position(1, 1) }},
                 tuple_type{ Position(0, 1),
                             vector<Position> { Position(0, 0), Position(1, 1) },
-                            vector<Position> { Position(0, 2)}},
+                            vector<Position> { Position(0, 2), Position(1, 1) }},
                 tuple_type{ Position(1, 0),
                             vector<Position> { Position(0, 0) },
                             vector<Position> { Position(1, 1), Position(2, 0) }},
                 tuple_type{ Position(1, 0),
                             vector<Position> { Position(1, 1) },
-                            vector<Position> { Position(0, 0), Position(2, 0) }},
+                            vector<Position> { Position(0, 0), Position(1, 1), Position(2, 0) }},
                 tuple_type{ Position(1, 0),
                             vector<Position> { Position(2, 0) },
                             vector<Position> { Position(0, 0), Position(1, 1) }},
                 tuple_type{ Position(1, 0),
                             vector<Position> { Position(0, 0), Position(1, 1) },
-                            vector<Position> { Position(2, 0)}},
+                            vector<Position> { Position(2, 0), Position(1, 1) }},
                 tuple_type{ Position(1, 1),
                             vector<Position> { Position(0, 1), Position(2, 1) },
                             vector<Position> { Position(1, 0), Position(1, 2) }},
@@ -153,10 +154,10 @@ TEST_CASE("Test legal moves on empty 3x3 board") {
                             vector<Position> { Position(2, 1), Position(1, 2) }},
                 }));
     auto startPos = get<0>(dump);
-    auto wallPos = get<1>(dump);
+    auto boxPos = get<1>(dump);
     auto expectedMoves = get<2>(dump);
-    for (auto wall: wallPos) {
-        board[get<0>(wall)][get<1>(wall)] = Tile::Wall;
+    for (auto box: boxPos) {
+        board[get<0>(box)][get<1>(box)] = Tile::Box;
     }
 
     auto legalMoves = board.getLegalMoves(startPos);
