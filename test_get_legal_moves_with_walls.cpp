@@ -12,6 +12,12 @@ using std::sort;
 using std::tuple;
 using std::vector;
 
+struct TestData {
+    Position startPos;
+    vector<Position> wallPos;
+    vector<Position> expectedMoves;
+};
+
 TEST_CASE("Test legal moves on empty 2x1 board") {
     Board board(2, 1);
     board[0][0] = Tile::Wall;
@@ -47,48 +53,49 @@ TEST_CASE("Test legal moves on empty 1x2 board") {
 TEST_CASE("Test legal moves on empty 2x2 board") {
     Board board(2, 2);
 
-    using tuple_type = tuple<Position, vector<Position>, vector<Position>>;
-    auto dump = GENERATE(table<Position, vector<Position>, vector<Position>>( {
-                tuple_type{ Position(0, 0),
-                            vector<Position> { Position(1, 0) },
-                            vector<Position> { Position(0, 1) }},
-                tuple_type{ Position(0, 0),
-                            vector<Position> { Position(1, 0) },
-                            vector<Position> { Position(0, 1) }},
-                tuple_type{ Position(0, 0),
-                            vector<Position> { Position(0, 1), Position(1, 0) },
-                            vector<Position> { }},
-                tuple_type{ Position(0, 1),
-                            vector<Position> { Position(0, 0) },
-                            vector<Position> { Position(1, 1) }},
-                tuple_type{ Position(0, 1),
-                            vector<Position> { Position(1, 1) },
-                            vector<Position> { Position(0, 0) }},
-                tuple_type{ Position(0, 1),
-                            vector<Position> { Position(0, 0), Position(1, 1) },
-                            vector<Position> { }},
-                tuple_type{ Position(1, 0),
-                            vector<Position> { Position(0, 0) },
-                            vector<Position> { Position(1, 1) }},
-                tuple_type{ Position(1, 0),
-                            vector<Position> { Position(1, 1) },
-                            vector<Position> { Position(0, 0) }},
-                tuple_type{ Position(1, 0),
-                            vector<Position> { Position(1, 1), Position(0, 0) },
-                            vector<Position> { }},
-                tuple_type{ Position(1, 1),
-                            vector<Position> { Position(0, 1) },
-                            vector<Position> { Position(1, 0) }},
-                tuple_type{ Position(1, 1),
-                            vector<Position> { Position(1, 0) },
-                            vector<Position> { Position(0, 1) }},
-                tuple_type{ Position(1, 1),
-                            vector<Position> { Position(1, 0), Position(0, 1) },
-                            vector<Position> { }}
-                }));
-    auto startPos = get<0>(dump);
-    auto wallPos = get<1>(dump);
-    auto expectedMoves = get<2>(dump);
+    auto testData = GENERATE(TestData{Position(0, 0),
+                                 vector<Position> {Position(1, 0)},
+                                 vector<Position> {Position(0, 1)}},
+                             TestData{Position(0, 0),
+                                 vector<Position> {Position(1, 0)},
+                                 vector<Position> {Position(0, 1)}},
+                             TestData{Position(0, 0),
+                                 vector<Position> {Position(0, 1),
+                                                   Position(1, 0)},
+                                 vector<Position> { }},
+                             TestData{Position(0, 1),
+                                 vector<Position> {Position(0, 0)},
+                                 vector<Position> {Position(1, 1)}},
+                             TestData{Position(0, 1),
+                                 vector<Position> {Position(1, 1)},
+                                 vector<Position> {Position(0, 0)}},
+                             TestData{Position(0, 1),
+                                 vector<Position> {Position(0, 0),
+                                                   Position(1, 1)},
+                                 vector<Position> { }},
+                             TestData{Position(1, 0),
+                                 vector<Position> {Position(0, 0)},
+                                 vector<Position> {Position(1, 1)}},
+                             TestData{Position(1, 0),
+                                 vector<Position> {Position(1, 1)},
+                                 vector<Position> {Position(0, 0)}},
+                             TestData{ Position(1, 0),
+                                 vector<Position> {Position(1, 1),
+                                                    Position(0, 0)},
+                                 vector<Position> { }},
+                             TestData{ Position(1, 1),
+                                 vector<Position> {Position(0, 1)},
+                                 vector<Position> {Position(1, 0)}},
+                             TestData{ Position(1, 1),
+                                 vector<Position> {Position(1, 0)},
+                                 vector<Position> {Position(0, 1)}},
+                             TestData{ Position(1, 1),
+                                 vector<Position> {Position(1, 0),
+                                                   Position(0, 1)},
+                                 vector<Position> { }});
+    auto startPos = testData.startPos;
+    auto wallPos = testData.wallPos;
+    auto expectedMoves = testData.expectedMoves;
     for (auto wall: wallPos) {
         board[get<0>(wall)][get<1>(wall)] = Tile::Wall;
     }
